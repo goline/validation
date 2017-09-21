@@ -33,10 +33,16 @@ type ValidatorChecker interface {
 }
 
 func New() Validator {
-	return &FactoryValidator{
+	v := &FactoryValidator{
 		tag:      "validate",
 		checkers: make(map[string]Checker),
 	}
+	v.WithChecker(MinChecker()).
+		WithChecker(MaxChecker()).
+		WithChecker(RangeChecker()).
+		WithChecker(EmailChecker())
+
+	return v
 }
 
 type FactoryValidator struct {
