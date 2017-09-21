@@ -5,5 +5,5 @@ type Checker interface {
 	Name() string
 
 	// Check tests input value with expectation
-	Check(v interface{}, expects interface{}) error
+	Check(v interface{}, expects string) error
 }

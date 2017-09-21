@@ -101,7 +101,7 @@ func (v *FactoryValidator) Validate(input interface{}) error {
 				continue
 			}
 			if err := c.Check(val.Field(i).Interface(), p); err != nil {
-				return err
+				return v.modifyError(sf.Name, err)
 			}
 		}
 	}
@@ -131,6 +131,15 @@ func (v *FactoryValidator) valueOf(input interface{}) (reflect.Value, error) {
 	default:
 		return reflect.Value{}, errors.New(ERR_VALIDATOR_INVALID_TYPE, fmt.Sprintf("%s type is not supported", t.Kind().String()))
 	}
+}
+
+func (v *FactoryValidator) modifyError(key string, err error) error {
+	if e, ok := err.(errors.Error); ok == true {
+		e.WithMessage(fmt.Sprintf("%s: %s", key, e.Message()))
+		return e
+	}
+
+	return errors.New(ERR_VALIDATOR_UNKNOWN_ERROR, fmt.Sprintf("%s: %s", key, err.Error()))
 }
 
 func (v *FactoryValidator) parseTags(tag string) (map[string]string, error) {

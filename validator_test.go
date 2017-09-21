@@ -50,8 +50,8 @@ func TestFactoryValidator_WithTag(t *testing.T) {
 
 type xChecker struct{}
 
-func (c *xChecker) Name() string                                   { return "x" }
-func (c *xChecker) Check(v interface{}, expects interface{}) error { return nil }
+func (c *xChecker) Name() string                              { return "x" }
+func (c *xChecker) Check(v interface{}, expects string) error { return nil }
 
 func TestFactoryValidator_Checker(t *testing.T) {
 	v := &FactoryValidator{checkers: make(map[string]Checker)}
@@ -80,17 +80,17 @@ func TestFactoryValidator_WithChecker(t *testing.T) {
 type emptyInput struct{}
 type yChecker struct{}
 
-func (c *yChecker) Name() string                                   { return "y" }
-func (c *yChecker) Check(v interface{}, expects interface{}) error { return nil }
+func (c *yChecker) Name() string                              { return "y" }
+func (c *yChecker) Check(v interface{}, expects string) error { return nil }
 
 type zChecker struct{}
 
 func (c *zChecker) Name() string { return "z" }
-func (c *zChecker) Check(v interface{}, expects interface{}) error {
+func (c *zChecker) Check(v interface{}, expects string) error {
 	if vv, ok := v.(string); ok == true && vv != "" {
 		return nil
 	}
-	return errors.New("", "")
+	return errors.New("code", "msg")
 }
 
 func TestFactoryValidator_Validate_InvalidType(t *testing.T) {
