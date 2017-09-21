@@ -75,10 +75,7 @@ func (v *FactoryValidator) Validate(input interface{}) error {
 		return nil
 	}
 
-	val, err := v.valueOf(input)
-	if err != nil {
-		return err
-	}
+	val, _ := v.valueOf(input)
 	for i := 0; i < n; i++ {
 		sf := t.Field(i)
 		if _, ok := sf.Tag.Lookup(v.tag); ok == false {
@@ -145,15 +142,15 @@ func (v *FactoryValidator) modifyError(key string, err error) error {
 func (v *FactoryValidator) parseTags(tag string) (map[string]string, error) {
 	m := make(map[string]string)
 	p := `([^\W]+)(=?([^=;]+)?)`
-	r, err := regexp.Compile(p)
-	if err != nil {
-		return nil, err
+	r, _ := regexp.Compile(p)
+
+	if !r.MatchString(tag) {
+		return m, errors.New(ERR_VALIDATOR_INVALID_TAG, fmt.Sprintf("%s is not a valid tag string", tag))
 	}
-	if r.MatchString(tag) {
-		mm := r.FindAllStringSubmatch(tag, -1)
-		for _, sm := range mm {
-			m[sm[1]] = sm[3]
-		}
+
+	mm := r.FindAllStringSubmatch(tag, -1)
+	for _, sm := range mm {
+		m[sm[1]] = sm[3]
 	}
 
 	return m, nil

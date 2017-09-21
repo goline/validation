@@ -13,10 +13,7 @@ func EmailChecker() Checker {
 	pattern := `\A[a-z0-9!#$%&'*+/=?^_` + "`" +
 		`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_` + "`" +
 		`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\z`
-	r, err := regexp.Compile(pattern)
-	if err != nil {
-		panic(err)
-	}
+	r, _ := regexp.Compile(pattern)
 	return &emailChecker{
 		regexp: r,
 	}

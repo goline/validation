@@ -33,10 +33,7 @@ func (c *rangeChecker) Check(v interface{}, expects string) error {
 
 func (c *rangeChecker) checkInt(i int64, expects string) error {
 	p := `^(\d+)-(\d+)$`
-	r, err := regexp.Compile(p)
-	if err != nil {
-		panic(err)
-	}
+	r, _ := regexp.Compile(p)
 
 	if r.MatchString(expects) == false {
 		return errors.New(ERR_VALIDATOR_INVALID_FORMAT, fmt.Sprintf("Expects format %s. Got %s", p, expects))
@@ -54,10 +51,7 @@ func (c *rangeChecker) checkInt(i int64, expects string) error {
 
 func (c *rangeChecker) checkFloat(f float64, expects string) error {
 	p := `^([\d.]+)-([\d.]+)$`
-	r, err := regexp.Compile(p)
-	if err != nil {
-		panic(err)
-	}
+	r, _ := regexp.Compile(p)
 
 	if r.MatchString(expects) == false {
 		return errors.New(ERR_VALIDATOR_INVALID_FORMAT, fmt.Sprintf("Expects format %s. Got %s", p, expects))

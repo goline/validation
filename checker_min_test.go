@@ -102,3 +102,17 @@ func TestMinChecker_ERR_VALIDATOR_NOT_FLOAT(t *testing.T) {
 		t.Errorf("Expects ERR_VALIDATOR_NOT_FLOAT. Got %s", e.Code())
 	}
 }
+
+type sampleMinInputTest8 struct {
+	Age float64 `validate:"min=10.1"`
+}
+
+func TestMaxChecker_ERR_VALIDATOR_NOT_MIN_Float(t *testing.T) {
+	v := getMinValidator()
+	err := v.Validate(&sampleMinInputTest8{Age: 10.0})
+	if err == nil {
+		t.Error("Expects err is not nil")
+	} else if e, ok := err.(errors.Error); ok == false || e.Code() != ERR_VALIDATOR_NOT_MIN {
+		t.Errorf("Expects ERR_VALIDATOR_NOT_MIN. Got %s", e.Code())
+	}
+}

@@ -134,3 +134,33 @@ func TestFactoryValidator_Validate_Ok(t *testing.T) {
 		t.Errorf("Expects err is nil. Got %v", err)
 	}
 }
+
+type sampleInput2 struct {
+	Y string `validate:""`
+}
+
+func TestFactoryValidator_Validate_EmptyTag(t *testing.T) {
+	v := New()
+	v.WithChecker(&yChecker{})
+	v.WithChecker(&zChecker{})
+	err := v.Validate(sampleInput2{"hello"})
+	if err != nil {
+		t.Errorf("Expects err is nil. Got %v", err)
+	}
+}
+
+type sampleInput3 struct {
+	Y string `validate:"#$%%@"`
+}
+
+func TestFactoryValidator_Validate_InvalidTag(t *testing.T) {
+	v := New()
+	v.WithChecker(&yChecker{})
+	v.WithChecker(&zChecker{})
+	err := v.Validate(sampleInput3{"hello"})
+	if err == nil {
+		t.Error("Expects err is not nil")
+	} else if e, ok := err.(errors.Error); ok == false || e.Code() != ERR_VALIDATOR_INVALID_TAG {
+		t.Errorf("Expects ERR_VALIDATOR_INVALID_TAG. Got %s", e.Code())
+	}
+}
