@@ -25,3 +25,23 @@ func main() {
 	fmt.Println(v.Validate(Person{Age: 19, Name: "jimmy", Email: "e@mail.com"}))
 }
 ```
+
+The result looks like
+```
+[0.102.005] Age: 17 is not in range (18, 60)
+[0.102.006] Name: Minimum length is 3. Got 2
+[0.102.007] Name: Maximum length is 10. Got 12
+[0.102.001] Email: ###email.com is not an email address
+<nil>
+```
+
+### Extends Validator
+
+You could extend validator as much as possible via `Checker`
+
+- First, we need to create a struct which implements Checker interface
+- Then we add it into our validator
+
+```
+validator.WithChecker(&MyCustomChecker{})
+```
