@@ -39,6 +39,8 @@ func New() Validator {
 	}
 	v.WithChecker(MinChecker()).
 		WithChecker(MaxChecker()).
+		WithChecker(MinLengthChecker()).
+		WithChecker(MaxLengthChecker()).
 		WithChecker(RangeChecker()).
 		WithChecker(EmailChecker())
 
