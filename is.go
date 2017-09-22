@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/goline/errors"
 	"reflect"
+	"strconv"
 )
 
 func IsString(v interface{}) (string, error) {
@@ -18,19 +19,37 @@ func IsString(v interface{}) (string, error) {
 func IsInt(v interface{}) (int64, error) {
 	t := reflect.TypeOf(v)
 	if t.Kind() != reflect.Int64 {
-		return 0, errors.New(ERR_VALIDATOR_NOT_INT, fmt.Sprintf("%v is not int", v))
+		return 0, errors.New(ERR_VALIDATOR_NOT_INT, fmt.Sprintf("%v is not an integer", v))
 	}
 
 	return reflect.ValueOf(v).Int(), nil
 }
 
+func IsStringInt(s string) (int64, error) {
+	i, err := strconv.ParseInt(s, 10, 64)
+	if err != nil {
+		return 0, errors.New(ERR_VALIDATOR_NOT_INT, fmt.Sprintf("%s is not an integer", s))
+	}
+
+	return i, nil
+}
+
 func IsFloat(v interface{}) (float64, error) {
 	t := reflect.TypeOf(v)
 	if t.Kind() != reflect.Float64 {
-		return 0.0, errors.New(ERR_VALIDATOR_NOT_FLOAT, fmt.Sprintf("%v is not float", v))
+		return 0.0, errors.New(ERR_VALIDATOR_NOT_FLOAT, fmt.Sprintf("%v is not a float number", v))
 	}
 
 	return reflect.ValueOf(v).Float(), nil
+}
+
+func IsStringFloat(s string) (float64, error) {
+	f, err := strconv.ParseFloat(s, 64)
+	if err != nil {
+		return 0.0, errors.New(ERR_VALIDATOR_NOT_FLOAT, fmt.Sprintf("%s is not a float number", s))
+	}
+
+	return f, nil
 }
 
 func IsNumber(v interface{}) error {
