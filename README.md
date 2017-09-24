@@ -1,6 +1,8 @@
 # validation
 Tools to validate input
 
+[![Build Status](https://api.travis-ci.org/goline/validation.svg)](https://travis-ci.org/goline/validation)
+
 ### How To Use
 ```
 package main
