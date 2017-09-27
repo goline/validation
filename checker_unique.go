@@ -36,7 +36,7 @@ func (c *uniqueChecker) Check(v interface{}, expects string) error {
 	conditions[column] = v
 	row, _ := c.fetcher.FetchOne(table, conditions)
 	if row != nil {
-		return errors.New(ERR_VALIDATOR_NOT_UNIQUE, fmt.Sprintf("Value %v already exists. It must be unique", v))
+		return errors.New(ERR_VALIDATOR_NOT_UNIQUE, fmt.Sprintf("%v already exists. It must be unique", v))
 	}
 
 	return nil
