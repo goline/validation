@@ -105,3 +105,16 @@ type User struct {
 	Password string `validate:"regexp=[a-z]{1,}[A-Z]{1,}[0-9]{1,}"`
 }
 ```
+
+- `UniqueChecker` [*] helps to validate if a value exists in database's table, accepts `any`
+```
+// Add to validator before using
+// validator.WithChecker(UniqueChecker(new(YourDatabaseFetcher)))
+
+
+type User struct {
+	Email string `validate:"unique=users,email"`
+}
+```
+
+[*] These checkers are not enabled by default, user must specifies it in validator when using

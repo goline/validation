@@ -2,8 +2,9 @@ package validation
 
 import (
 	"fmt"
-	"github.com/goline/errors"
 	"regexp"
+
+	"github.com/goline/errors"
 )
 
 func EmailChecker() Checker {
