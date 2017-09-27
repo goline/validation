@@ -47,3 +47,61 @@ You could extend validator as much as possible via `Checker`
 ```
 validator.WithChecker(&MyCustomChecker{})
 ```
+
+### Internal Checkers
+
+- `EmailChecker` helps to validate if a string is an email address, accepts `string`
+```
+type User struct {
+	Email string `validate:"email"`
+}
+```
+
+- `InChecker` helps to validate if a value is appeared in a list of values, accepts `string`, `int64` and `float64`
+```
+type User struct {
+	Name string `validate:"in=john,marry,bill"`
+}
+```
+
+- `MaxChecker` helps to validate if a value is lower than a specific maximum value, accepts `int64` and `float64`
+```
+type User struct {
+	Age int64 `validate:"max=60"`
+}
+```
+
+- `MaxLengthChecker` helps to validate if a string has length is lower than a specific maximum value, accepts `string`
+```
+type User struct {
+	Username string `validate:"maxLength=100"`
+}
+```
+
+- `MinChecker` helps to validate if a value is greater than a specific minimum value, accepts `int64` and `float64`
+```
+type User struct {
+	Age int64 `validate:"min=13"`
+}
+```
+
+- `MinLengthChecker` helps to validate if a string has length is greater than a specific maximum value, accepts `string`
+```
+type User struct {
+	Username string `validate:"minLength=3"`
+}
+```
+
+- `RangeChecker` helps to validate if a value is in a range, accepts `int64`, `float64`
+```
+type User struct {
+	Age int64 `validate:"range=18-60"`
+}
+```
+
+- `RegExpChecker` helps to validate if a value matches a proposed regular expression string, accepts `string`
+```
+type User struct {
+	Password string `validate:"regexp=[a-z]{1,}[A-Z]{1,}[0-9]{1,}"`
+}
+```

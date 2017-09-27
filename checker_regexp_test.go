@@ -6,10 +6,6 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func getRegExpValidator() Validator {
-	return New().WithChecker(RegExpChecker())
-}
-
 type sampleRegexpInputTest1 struct {
 	Age int64 `validate:"regexp=**"`
 }
@@ -28,25 +24,25 @@ var _ = Describe("RegExpChecker", func() {
 	})
 
 	It("should return error code ERR_VALIDATOR_REGEXP_WRONG_PATTERN", func() {
-		err := getRegExpValidator().Validate(sampleRegexpInputTest1{10})
+		err := New().Validate(sampleRegexpInputTest1{10})
 		Expect(err).NotTo(BeNil())
 		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_REGEXP_WRONG_PATTERN))
 	})
 
 	It("should return error code ERR_VALIDATOR_REGEXP_NOT_MATCH", func() {
-		err := getRegExpValidator().Validate(sampleRegexpInputTest2{"j@hn"})
+		err := New().Validate(sampleRegexpInputTest2{"j@hn"})
 		Expect(err).NotTo(BeNil())
 		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_REGEXP_NOT_MATCH))
 	})
 
 	It("should return error code ERR_VALIDATOR_NOT_STRING", func() {
-		err := getRegExpValidator().Validate(sampleRegexpInputTest3{10})
+		err := New().Validate(sampleRegexpInputTest3{10})
 		Expect(err).NotTo(BeNil())
 		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_STRING))
 	})
 
 	It("should return nil", func() {
-		err := getRegExpValidator().Validate(sampleRegexpInputTest2{"john"})
+		err := New().Validate(sampleRegexpInputTest2{"john"})
 		Expect(err).To(BeNil())
 	})
 })

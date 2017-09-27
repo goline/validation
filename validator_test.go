@@ -47,6 +47,10 @@ type sampleValidatorInput3 struct {
 	Y string `validate:"#$%%@"`
 }
 
+type sampleValidatorInput4 struct {
+	Y string `validate:"mailer"`
+}
+
 var _ = Describe("Validator", func() {
 	It("should return an instance of Validator", func() {
 		Expect(New()).NotTo(BeNil())
@@ -128,5 +132,14 @@ var _ = Describe("Validator", func() {
 		err := v.Validate(sampleValidatorInput3{"hello"})
 		Expect(err).NotTo(BeNil())
 		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_INVALID_TAG))
+	})
+
+	It("should return continue when checker is not found", func() {
+		v := &FactoryValidator{
+			tag:      "validate",
+			checkers: make(map[string]Checker),
+		}
+		err := v.Validate(sampleValidatorInput4{"hello"})
+		Expect(err).To(BeNil())
 	})
 })

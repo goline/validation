@@ -42,7 +42,9 @@ func New() Validator {
 		WithChecker(MinLengthChecker()).
 		WithChecker(MaxLengthChecker()).
 		WithChecker(RangeChecker()).
-		WithChecker(EmailChecker())
+		WithChecker(EmailChecker()).
+		WithChecker(RegExpChecker()).
+		WithChecker(InChecker())
 
 	return v
 }

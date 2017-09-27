@@ -6,10 +6,6 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func getMinValidator() Validator {
-	return New().WithChecker(MinChecker())
-}
-
 type sampleMinInputTest1 struct {
 	Age int64 `validate:"min=aa"`
 }
@@ -44,51 +40,51 @@ type sampleMinInputTest8 struct {
 
 var _ = Describe("MinChecker", func() {
 	It("should return error code ERR_VALIDATOR_NOT_NUMBER", func() {
-		err := getMinValidator().Validate(&sampleMinInputTest1{Age: 10})
+		err := New().Validate(&sampleMinInputTest1{Age: 10})
 		Expect(err).NotTo(BeNil())
 		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_NUMBER))
 	})
 
 	It("should return error code ERR_VALIDATOR_NOT_NUMBER", func() {
-		err := getMinValidator().Validate(&sampleMinInputTest1{Age: 10})
+		err := New().Validate(&sampleMinInputTest1{Age: 10})
 		Expect(err).NotTo(BeNil())
 		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_NUMBER))
 
-		err = getMinValidator().Validate(&sampleMinInputTest2{Age: "10"})
+		err = New().Validate(&sampleMinInputTest2{Age: "10"})
 		Expect(err).NotTo(BeNil())
 		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_NUMBER))
 	})
 
 	It("should return error code ERR_VALIDATOR_NOT_MIN (int)", func() {
-		err := getMinValidator().Validate(&sampleMinInputTest3{Age: 9})
+		err := New().Validate(&sampleMinInputTest3{Age: 9})
 		Expect(err).NotTo(BeNil())
 		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_MIN))
 	})
 
 	It("should return nil (float)", func() {
-		err := getMinValidator().Validate(&sampleMinInputTest4{Age: 10.3})
+		err := New().Validate(&sampleMinInputTest4{Age: 10.3})
 		Expect(err).To(BeNil())
 	})
 
 	It("should return nil (int)", func() {
-		err := getMinValidator().Validate(&sampleMinInputTest5{Age: 11})
+		err := New().Validate(&sampleMinInputTest5{Age: 11})
 		Expect(err).To(BeNil())
 	})
 
 	It("should return error code ERR_VALIDATOR_NOT_INT", func() {
-		err := getMinValidator().Validate(&sampleMinInputTest6{Age: 11})
+		err := New().Validate(&sampleMinInputTest6{Age: 11})
 		Expect(err).NotTo(BeNil())
 		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_INT))
 	})
 
 	It("should return error code ERR_VALIDATOR_NOT_FLOAT", func() {
-		err := getMinValidator().Validate(&sampleMinInputTest7{Age: 11})
+		err := New().Validate(&sampleMinInputTest7{Age: 11})
 		Expect(err).NotTo(BeNil())
 		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_FLOAT))
 	})
 
 	It("should return error code ERR_VALIDATOR_NOT_MIN (float)", func() {
-		err := getMinValidator().Validate(&sampleMinInputTest8{Age: 9.9})
+		err := New().Validate(&sampleMinInputTest8{Age: 9.9})
 		Expect(err).NotTo(BeNil())
 		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_MIN))
 	})

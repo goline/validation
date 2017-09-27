@@ -6,10 +6,6 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func getEmailValidator() Validator {
-	return New().WithChecker(EmailChecker())
-}
-
 type sampleEmailInputTest1 struct {
 	Email int64 `validate:"email"`
 }
@@ -20,7 +16,7 @@ type sampleEmailInputTest2 struct {
 
 var _ = Describe("EmailChecker", func() {
 	It("should return error code ERR_VALIDATOR_NOT_STRING", func() {
-		err := getEmailValidator().Validate(sampleEmailInputTest1{5})
+		err := New().Validate(sampleEmailInputTest1{5})
 		Expect(err).NotTo(BeNil())
 		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_STRING))
 	})
@@ -32,7 +28,7 @@ var _ = Describe("EmailChecker", func() {
 		}
 
 		for _, email := range cases {
-			err := getEmailValidator().Validate(sampleEmailInputTest2{email})
+			err := New().Validate(sampleEmailInputTest2{email})
 			Expect(err).NotTo(BeNil())
 			Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_EMAIL))
 		}
@@ -45,7 +41,7 @@ var _ = Describe("EmailChecker", func() {
 		}
 
 		for _, email := range cases {
-			err := getEmailValidator().Validate(sampleEmailInputTest2{email})
+			err := New().Validate(sampleEmailInputTest2{email})
 			Expect(err).To(BeNil())
 		}
 	})

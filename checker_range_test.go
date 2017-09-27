@@ -6,10 +6,6 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func getRangeValidator() Validator {
-	return New().WithChecker(RangeChecker())
-}
-
 type sampleRangeInputTest1 struct {
 	Age string `validate:"range=18-60"`
 }
@@ -40,42 +36,42 @@ type sampleRangeInputTest7 struct {
 
 var _ = Describe("MinLengthChecker", func() {
 	It("should return error code ERR_VALIDATOR_NOT_NUMBER", func() {
-		err := getMinLengthValidator().Validate(sampleRangeInputTest1{"10"})
+		err := New().Validate(sampleRangeInputTest1{"10"})
 		Expect(err).NotTo(BeNil())
 		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_NUMBER))
 	})
 
 	It("should return error code ERR_VALIDATOR_INVALID_FORMAT", func() {
-		err := getMinLengthValidator().Validate(sampleRangeInputTest2{10})
+		err := New().Validate(sampleRangeInputTest2{10})
 		Expect(err).NotTo(BeNil())
 		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_INVALID_FORMAT))
 	})
 
 	It("should return error code ERR_VALIDATOR_NOT_IN_RANGE", func() {
-		err := getMinLengthValidator().Validate(sampleRangeInputTest3{10})
+		err := New().Validate(sampleRangeInputTest3{10})
 		Expect(err).NotTo(BeNil())
 		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_IN_RANGE))
 	})
 
 	It("should return error code ERR_VALIDATOR_INVALID_FORMAT (float)", func() {
-		err := getMinLengthValidator().Validate(sampleRangeInputTest4{10.2})
+		err := New().Validate(sampleRangeInputTest4{10.2})
 		Expect(err).NotTo(BeNil())
 		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_INVALID_FORMAT))
 	})
 
 	It("should return error code ERR_VALIDATOR_NOT_IN_RANGE (float)", func() {
-		err := getMinLengthValidator().Validate(sampleRangeInputTest5{9.9})
+		err := New().Validate(sampleRangeInputTest5{9.9})
 		Expect(err).NotTo(BeNil())
 		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_IN_RANGE))
 	})
 
 	It("should return nil (int)", func() {
-		err := getMinLengthValidator().Validate(sampleRangeInputTest6{10})
+		err := New().Validate(sampleRangeInputTest6{10})
 		Expect(err).To(BeNil())
 	})
 
 	It("should return nil (float)", func() {
-		err := getMinLengthValidator().Validate(sampleRangeInputTest7{10.1})
+		err := New().Validate(sampleRangeInputTest7{10.1})
 		Expect(err).To(BeNil())
 	})
 })
