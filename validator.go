@@ -32,10 +32,19 @@ type ValidatorChecker interface {
 	WithChecker(checker Checker) Validator
 }
 
+type ValidatorErrorLeveller interface {
+	// ErrorLevel returns default error level
+	ErrorLevel() string
+
+	// WithErrorLevel sets default error level
+	WithErrorLevel(errorLevel string) Validator
+}
+
 func New() Validator {
 	v := &FactoryValidator{
-		tag:      "validate",
-		checkers: make(map[string]Checker),
+		tag:        "validate",
+		checkers:   make(map[string]Checker),
+		errorLevel: errors.LEVEL_WARN,
 	}
 	v.WithChecker(MinChecker()).
 		WithChecker(MaxChecker()).
@@ -50,8 +59,9 @@ func New() Validator {
 }
 
 type FactoryValidator struct {
-	tag      string
-	checkers map[string]Checker
+	tag        string
+	checkers   map[string]Checker
+	errorLevel string
 }
 
 func (v *FactoryValidator) Tag() string {
@@ -70,6 +80,15 @@ func (v *FactoryValidator) Checker(name string) (Checker, bool) {
 
 func (v *FactoryValidator) WithChecker(checker Checker) Validator {
 	v.checkers[checker.Name()] = checker
+	return v
+}
+
+func (v *FactoryValidator) ErrorLevel() string {
+	return v.errorLevel
+}
+
+func (v *FactoryValidator) WithErrorLevel(errorLevel string) Validator {
+	v.errorLevel = errorLevel
 	return v
 }
 
@@ -141,12 +160,16 @@ func (v *FactoryValidator) valueOf(input interface{}) (reflect.Value, error) {
 }
 
 func (v *FactoryValidator) modifyError(key string, err error) error {
+	var r errors.Error
 	if e, ok := err.(errors.Error); ok == true {
 		e.WithMessage(fmt.Sprintf("%s: %s", key, e.Message()))
-		return e
+		r = e
+	} else {
+		r = errors.New(ERR_VALIDATOR_UNKNOWN_ERROR, fmt.Sprintf("%s: %s", key, err.Error()))
 	}
+	r.WithLevel(v.errorLevel)
 
-	return errors.New(ERR_VALIDATOR_UNKNOWN_ERROR, fmt.Sprintf("%s: %s", key, err.Error()))
+	return r
 }
 
 func (v *FactoryValidator) parseTags(tag string) (map[string]string, error) {

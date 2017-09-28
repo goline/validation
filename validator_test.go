@@ -1,6 +1,7 @@
 package validation
 
 import (
+	ee "errors"
 	"testing"
 
 	"github.com/goline/errors"
@@ -55,7 +56,8 @@ var _ = Describe("Validator", func() {
 	It("should return an instance of Validator", func() {
 		Expect(New()).NotTo(BeNil())
 	})
-
+})
+var _ = Describe("FactoryValidator", func() {
 	It("[private] should parse tags", func() {
 		tag := "email;min=30;max=100;in=40,50,55;regexp=(\\d+)"
 		v := &FactoryValidator{}
@@ -141,5 +143,44 @@ var _ = Describe("Validator", func() {
 		}
 		err := v.Validate(sampleValidatorInput4{"hello"})
 		Expect(err).To(BeNil())
+	})
+
+	It("should allow to get default error's level", func() {
+		v := &FactoryValidator{
+			tag:      "validate",
+			checkers: make(map[string]Checker),
+		}
+		v.errorLevel = errors.LEVEL_INFO
+		Expect(v.ErrorLevel()).To(Equal(errors.LEVEL_INFO))
+	})
+
+	It("should allow to set default error's level", func() {
+		v := &FactoryValidator{
+			tag:      "validate",
+			checkers: make(map[string]Checker),
+		}
+		v.WithErrorLevel(errors.LEVEL_DEBUG)
+		Expect(v.errorLevel).To(Equal(errors.LEVEL_DEBUG))
+	})
+
+	It("should return error code ERR_VALIDATOR_UNKNOWN_ERROR if error is unknown", func() {
+		v := &FactoryValidator{
+			tag:      "validate",
+			checkers: make(map[string]Checker),
+		}
+		v.WithErrorLevel(errors.LEVEL_DEBUG)
+		err := v.modifyError("name", ee.New("an error"))
+		Expect(err).NotTo(BeNil())
+		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_UNKNOWN_ERROR))
+	})
+
+	It("should return error code ERR_VALIDATOR_INVALID_TYPE if value is not supported", func() {
+		v := &FactoryValidator{
+			tag:      "validate",
+			checkers: make(map[string]Checker),
+		}
+		_, err := v.valueOf("string")
+		Expect(err).NotTo(BeNil())
+		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_INVALID_TYPE))
 	})
 })
