@@ -32,19 +32,17 @@ type ValidatorChecker interface {
 	WithChecker(checker Checker) Validator
 }
 
-type ValidatorErrorLeveller interface {
-	// ErrorLevel returns default error level
-	ErrorLevel() string
-
-	// WithErrorLevel sets default error level
-	WithErrorLevel(errorLevel string) Validator
+type ValidatorErrorHandler interface {
+	// WithErrorModifier sets default error modifier
+	WithErrorModifier(modifier ErrorModifier) Validator
 }
+
+type ErrorModifier func(err errors.Error)
 
 func New() Validator {
 	v := &FactoryValidator{
-		tag:        "validate",
-		checkers:   make(map[string]Checker),
-		errorLevel: errors.LEVEL_WARN,
+		tag:      "validate",
+		checkers: make(map[string]Checker),
 	}
 	v.WithChecker(MinChecker()).
 		WithChecker(MaxChecker()).
@@ -59,9 +57,9 @@ func New() Validator {
 }
 
 type FactoryValidator struct {
-	tag        string
-	checkers   map[string]Checker
-	errorLevel string
+	tag           string
+	checkers      map[string]Checker
+	errorModifier ErrorModifier
 }
 
 func (v *FactoryValidator) Tag() string {
@@ -83,19 +81,15 @@ func (v *FactoryValidator) WithChecker(checker Checker) Validator {
 	return v
 }
 
-func (v *FactoryValidator) ErrorLevel() string {
-	return v.errorLevel
-}
-
-func (v *FactoryValidator) WithErrorLevel(errorLevel string) Validator {
-	v.errorLevel = errorLevel
+func (v *FactoryValidator) WithErrorModifier(modifier ErrorModifier) Validator {
+	v.errorModifier = modifier
 	return v
 }
 
 func (v *FactoryValidator) Validate(input interface{}) error {
 	t, err := v.validateType(input)
 	if err != nil {
-		return err
+		return v.modifyError("VALIDATOR", err)
 	}
 
 	n := t.NumField()
@@ -118,7 +112,7 @@ func (v *FactoryValidator) Validate(input interface{}) error {
 
 		m, err := v.parseTags(tag)
 		if err != nil {
-			return err
+			return v.modifyError("VALIDATOR", err)
 		}
 
 		for k, p := range m {
@@ -167,7 +161,9 @@ func (v *FactoryValidator) modifyError(key string, err error) error {
 	} else {
 		r = errors.New(ERR_VALIDATOR_UNKNOWN_ERROR, fmt.Sprintf("%s: %s", key, err.Error()))
 	}
-	r.WithLevel(v.errorLevel)
+	if v.errorModifier != nil {
+		v.errorModifier(r)
+	}
 
 	return r
 }

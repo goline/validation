@@ -4,6 +4,7 @@ import (
 	ee "errors"
 	"testing"
 
+	"fmt"
 	"github.com/goline/errors"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -145,22 +146,16 @@ var _ = Describe("FactoryValidator", func() {
 		Expect(err).To(BeNil())
 	})
 
-	It("should allow to get default error's level", func() {
+	It("should allow to set error's modifier", func() {
 		v := &FactoryValidator{
 			tag:      "validate",
 			checkers: make(map[string]Checker),
 		}
-		v.errorLevel = errors.LEVEL_INFO
-		Expect(v.ErrorLevel()).To(Equal(errors.LEVEL_INFO))
-	})
-
-	It("should allow to set default error's level", func() {
-		v := &FactoryValidator{
-			tag:      "validate",
-			checkers: make(map[string]Checker),
-		}
-		v.WithErrorLevel(errors.LEVEL_DEBUG)
-		Expect(v.errorLevel).To(Equal(errors.LEVEL_DEBUG))
+		v.WithErrorModifier(func(err errors.Error) {})
+		Expect(v.errorModifier).NotTo(BeNil())
+		err := v.Validate("string")
+		fmt.Println(err)
+		Expect(err).NotTo(BeNil())
 	})
 
 	It("should return error code ERR_VALIDATOR_UNKNOWN_ERROR if error is unknown", func() {
@@ -168,7 +163,6 @@ var _ = Describe("FactoryValidator", func() {
 			tag:      "validate",
 			checkers: make(map[string]Checker),
 		}
-		v.WithErrorLevel(errors.LEVEL_DEBUG)
 		err := v.modifyError("name", ee.New("an error"))
 		Expect(err).NotTo(BeNil())
 		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_UNKNOWN_ERROR))
