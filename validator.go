@@ -32,7 +32,7 @@ type ValidatorChecker interface {
 	WithChecker(checker Checker) Validator
 }
 
-type ValidatorErrorHandler interface {
+type ValidatorErrorModifier interface {
 	// WithErrorModifier sets default error modifier
 	WithErrorModifier(modifier ErrorModifier) Validator
 }
