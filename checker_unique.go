@@ -34,7 +34,10 @@ func (c *uniqueChecker) Check(v interface{}, expects string) error {
 
 	conditions := make(map[string]interface{})
 	conditions[column] = v
-	row, _ := c.fetcher.FetchOne(table, conditions)
+	row, err := c.fetcher.FetchOne(table, conditions)
+	if err != nil {
+		return errors.New(ERR_VALIDATOR_NOT_UNIQUE, fmt.Sprintf("Unable to fetch appropriate resource for %s", v))
+	}
 	if row != nil {
 		return errors.New(ERR_VALIDATOR_NOT_UNIQUE, fmt.Sprintf("%v already exists. It must be unique", v))
 	}
