@@ -151,7 +151,7 @@ var _ = Describe("FactoryValidator", func() {
 			tag:      "validate",
 			checkers: make(map[string]Checker),
 		}
-		v.WithErrorModifier(func(err errors.Error) {})
+		v.WithErrorModifier(func(key string, err errors.Error) {})
 		Expect(v.errorModifier).NotTo(BeNil())
 		err := v.Validate("string")
 		fmt.Println(err)
