@@ -37,7 +37,7 @@ type ValidatorErrorModifier interface {
 	WithErrorModifier(modifier ErrorModifier) Validator
 }
 
-type ErrorModifier func(err errors.Error)
+type ErrorModifier func(key string, err errors.Error)
 
 func New() Validator {
 	v := &FactoryValidator{
@@ -162,7 +162,7 @@ func (v *FactoryValidator) modifyError(key string, err error) error {
 		r = errors.New(ERR_VALIDATOR_UNKNOWN_ERROR, fmt.Sprintf("%s: %s", key, err.Error()))
 	}
 	if v.errorModifier != nil {
-		v.errorModifier(r)
+		v.errorModifier(key, r)
 	}
 
 	return r

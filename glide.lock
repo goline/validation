@@ -1,13 +1,13 @@
 hash: bea49f0f8b3ad0fcfb233a353758c9e37fa661a2c800cbc77099ebaec22fa453
-updated: 2017-09-28T20:20:31.408825051+07:00
+updated: 2017-10-05T21:42:07.762210048+07:00
 imports:
 - name: github.com/goline/errors
-  version: b2371c4c8b19799de259df6fde97621d1b42a059
+  version: 5496f56181d58117534ce2d0f8b3357e8072dbf7
 - name: github.com/pkg/errors
   version: 645ef00459ed84a119197bfb8d8205042c6df63d
 testImports:
 - name: github.com/onsi/ginkgo
-  version: 9eda700730cba42af70d53180f9dcce9266bc2bc
+  version: 11459a886d9cd66b319dac7ef1e917ee221372c9
   subpackages:
   - config
   - internal/codelocation
@@ -27,7 +27,7 @@ testImports:
   - reporters/stenographer/support/go-isatty
   - types
 - name: github.com/onsi/gomega
-  version: c893efa28eb45626cdaa76c9f653b62488858837
+  version: dcabb60a477c2b6f456df65037cb6708210fbb02
   subpackages:
   - format
   - internal/assertion
@@ -41,7 +41,7 @@ testImports:
   - matchers/support/goraph/util
   - types
 - name: golang.org/x/net
-  version: 0a9397675ba34b2845f758fe3cd68828369c6517
+  version: a04bdaca5b32abe1c069418fb7088ae607de5bd0
   subpackages:
   - html
   - html/atom
@@ -51,7 +51,7 @@ testImports:
   subpackages:
   - unix
 - name: golang.org/x/text
-  version: 1cbadb444a806fd9430d14ad08967ed91da4fa0a
+  version: d82c1812e304abfeeabd31e995a115a2855bf642
   subpackages:
   - encoding
   - encoding/charmap
