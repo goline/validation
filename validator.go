@@ -100,6 +100,13 @@ func (v *FactoryValidator) Validate(input interface{}) error {
 
 	val, _ := v.valueOf(input)
 	for i := 0; i < n; i++ {
+		vf := val.Field(i)
+		if vf.CanInterface() && (vf.Kind() == reflect.Struct || vf.Kind() == reflect.Ptr) {
+			if err := v.Validate(vf.Interface()); err != nil {
+				return err
+			}
+		}
+
 		sf := t.Field(i)
 		if _, ok := sf.Tag.Lookup(v.tag); ok == false {
 			continue
@@ -120,7 +127,7 @@ func (v *FactoryValidator) Validate(input interface{}) error {
 			if ok == false {
 				continue
 			}
-			if err := c.Check(val.Field(i).Interface(), p); err != nil {
+			if err := c.Check(vf.Interface(), p); err != nil {
 				return v.modifyError(sf.Name, err)
 			}
 		}

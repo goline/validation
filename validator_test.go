@@ -36,7 +36,7 @@ func (c *zChecker) Check(v interface{}, expects string) error {
 	return errors.New("code", "msg")
 }
 
-type sampleValidatorInput struct {
+type sampleValidatorInput1 struct {
 	Y string `validate:"y=1;z"`
 	X int    `not_validate:"true"`
 }
@@ -51,6 +51,16 @@ type sampleValidatorInput3 struct {
 
 type sampleValidatorInput4 struct {
 	Y string `validate:"mailer"`
+}
+
+type sampleValidatorInput5 struct {
+	X int `validate:"z"`
+	Y string
+}
+
+type sampleValidatorInput6 struct {
+	Z string
+	I sampleValidatorInput5
 }
 
 var _ = Describe("Validator", func() {
@@ -117,11 +127,19 @@ var _ = Describe("FactoryValidator", func() {
 	It("should return nil", func() {
 		v := New().WithChecker(&yChecker{}).WithChecker(&zChecker{})
 
-		err := v.Validate(sampleValidatorInput{})
+		err := v.Validate(sampleValidatorInput1{})
 		Expect(err).NotTo(BeNil())
 
-		err = v.Validate(&sampleValidatorInput{Y: "not_empty"})
+		err = v.Validate(&sampleValidatorInput1{Y: "not_empty"})
 		Expect(err).To(BeNil())
+	})
+
+	It("should return error code 'code'", func() {
+		v := New().WithChecker(&yChecker{}).WithChecker(&zChecker{})
+
+		err := v.Validate(sampleValidatorInput6{Z: "a", I: sampleValidatorInput5{1, "b"}})
+		Expect(err).NotTo(BeNil())
+		Expect(err.(errors.Error).Code()).To(Equal("code"))
 	})
 
 	It("should validate empty tag", func() {
