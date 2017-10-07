@@ -17,7 +17,7 @@ func (c *maxLengthChecker) Name() string {
 	return "maxLength"
 }
 
-func (c *maxLengthChecker) Check(v interface{}, expects string) error {
+func (c *maxLengthChecker) Check(v interface{}, expects string) errors.Error {
 	s, err := IsString(v)
 	if err != nil {
 		return err

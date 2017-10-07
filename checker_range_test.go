@@ -1,7 +1,6 @@
 package validation
 
 import (
-	"github.com/goline/errors"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -38,31 +37,31 @@ var _ = Describe("MinLengthChecker", func() {
 	It("should return error code ERR_VALIDATOR_NOT_NUMBER", func() {
 		err := New().Validate(sampleRangeInputTest1{"10"})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_NUMBER))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_NOT_NUMBER))
 	})
 
 	It("should return error code ERR_VALIDATOR_INVALID_FORMAT", func() {
 		err := New().Validate(sampleRangeInputTest2{10})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_INVALID_FORMAT))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_INVALID_FORMAT))
 	})
 
 	It("should return error code ERR_VALIDATOR_NOT_IN_RANGE", func() {
 		err := New().Validate(sampleRangeInputTest3{10})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_IN_RANGE))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_NOT_IN_RANGE))
 	})
 
 	It("should return error code ERR_VALIDATOR_INVALID_FORMAT (float)", func() {
 		err := New().Validate(sampleRangeInputTest4{10.2})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_INVALID_FORMAT))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_INVALID_FORMAT))
 	})
 
 	It("should return error code ERR_VALIDATOR_NOT_IN_RANGE (float)", func() {
 		err := New().Validate(sampleRangeInputTest5{9.9})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_IN_RANGE))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_NOT_IN_RANGE))
 	})
 
 	It("should return nil (int)", func() {

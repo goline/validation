@@ -17,7 +17,7 @@ func (c *minLengthChecker) Name() string {
 	return "minLength"
 }
 
-func (c *minLengthChecker) Check(v interface{}, expects string) error {
+func (c *minLengthChecker) Check(v interface{}, expects string) errors.Error {
 	s, err := IsString(v)
 	if err != nil {
 		return err

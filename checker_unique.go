@@ -21,7 +21,7 @@ func (c *uniqueChecker) Name() string {
 	return "unique"
 }
 
-func (c *uniqueChecker) Check(v interface{}, expects string) error {
+func (c *uniqueChecker) Check(v interface{}, expects string) errors.Error {
 	var table, column string
 	a := strings.Split(expects, ",")
 	switch len(a) {

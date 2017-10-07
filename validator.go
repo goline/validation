@@ -10,7 +10,7 @@ import (
 
 type Validator interface {
 	// Validate checks input value for error
-	Validate(v interface{}) error
+	Validate(v interface{}) errors.Error
 
 	ValidatorTagger
 	ValidatorChecker
@@ -86,7 +86,7 @@ func (v *FactoryValidator) WithErrorModifier(modifier ErrorModifier) Validator {
 	return v
 }
 
-func (v *FactoryValidator) Validate(input interface{}) error {
+func (v *FactoryValidator) Validate(input interface{}) errors.Error {
 	t, err := v.validateType(input)
 	if err != nil {
 		return v.modifyError("VALIDATOR", err)
@@ -136,7 +136,7 @@ func (v *FactoryValidator) Validate(input interface{}) error {
 	return nil
 }
 
-func (v *FactoryValidator) validateType(input interface{}) (reflect.Type, error) {
+func (v *FactoryValidator) validateType(input interface{}) (reflect.Type, errors.Error) {
 	t := reflect.TypeOf(input)
 	switch t.Kind() {
 	case reflect.Ptr:
@@ -148,7 +148,7 @@ func (v *FactoryValidator) validateType(input interface{}) (reflect.Type, error)
 	}
 }
 
-func (v *FactoryValidator) valueOf(input interface{}) (reflect.Value, error) {
+func (v *FactoryValidator) valueOf(input interface{}) (reflect.Value, errors.Error) {
 	t := reflect.TypeOf(input)
 	switch t.Kind() {
 	case reflect.Ptr:
@@ -160,22 +160,16 @@ func (v *FactoryValidator) valueOf(input interface{}) (reflect.Value, error) {
 	}
 }
 
-func (v *FactoryValidator) modifyError(key string, err error) error {
-	var r errors.Error
-	if e, ok := err.(errors.Error); ok == true {
-		e.WithMessage(fmt.Sprintf("%s: %s", key, e.Message()))
-		r = e
-	} else {
-		r = errors.New(ERR_VALIDATOR_UNKNOWN_ERROR, fmt.Sprintf("%s: %s", key, err.Error()))
-	}
+func (v *FactoryValidator) modifyError(key string, err errors.Error) errors.Error {
+	err.WithMessage(fmt.Sprintf("%s: %s", key, err.Message()))
 	if v.errorModifier != nil {
-		v.errorModifier(key, r)
+		v.errorModifier(key, err)
 	}
 
-	return r
+	return err
 }
 
-func (v *FactoryValidator) parseTags(tag string) (map[string]string, error) {
+func (v *FactoryValidator) parseTags(tag string) (map[string]string, errors.Error) {
 	m := make(map[string]string)
 	p := `([^\W]+)(=?([^=;]+)?)`
 	r, _ := regexp.Compile(p)

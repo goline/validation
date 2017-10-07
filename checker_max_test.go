@@ -1,7 +1,6 @@
 package validation
 
 import (
-	"github.com/goline/errors"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -42,23 +41,23 @@ var _ = Describe("MaxChecker", func() {
 	It("should return error code ERR_VALIDATOR_NOT_NUMBER", func() {
 		err := New().Validate(&sampleMaxInputTest1{Age: 10})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_NUMBER))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_NOT_NUMBER))
 	})
 
 	It("should return error code ERR_VALIDATOR_NOT_NUMBER", func() {
 		err := New().Validate(&sampleMaxInputTest1{Age: 10})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_NUMBER))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_NOT_NUMBER))
 
 		err = New().Validate(&sampleMaxInputTest2{Age: "10"})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_NUMBER))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_NOT_NUMBER))
 	})
 
 	It("should return error code ERR_VALIDATOR_NOT_MAX (int)", func() {
 		err := New().Validate(&sampleMaxInputTest3{Age: 11})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_MAX))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_NOT_MAX))
 	})
 
 	It("should return nil (float)", func() {
@@ -74,18 +73,18 @@ var _ = Describe("MaxChecker", func() {
 	It("should return error code ERR_VALIDATOR_NOT_INT", func() {
 		err := New().Validate(&sampleMaxInputTest6{Age: 11})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_INT))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_NOT_INT))
 	})
 
 	It("should return error code ERR_VALIDATOR_NOT_FLOAT", func() {
 		err := New().Validate(&sampleMaxInputTest7{Age: 11})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_FLOAT))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_NOT_FLOAT))
 	})
 
 	It("should return error code ERR_VALIDATOR_NOT_MAX (float)", func() {
 		err := New().Validate(&sampleMaxInputTest8{Age: 10.2})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_MAX))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_NOT_MAX))
 	})
 })

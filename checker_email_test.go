@@ -1,7 +1,6 @@
 package validation
 
 import (
-	"github.com/goline/errors"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -18,7 +17,7 @@ var _ = Describe("EmailChecker", func() {
 	It("should return error code ERR_VALIDATOR_NOT_STRING", func() {
 		err := New().Validate(sampleEmailInputTest1{5})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_STRING))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_NOT_STRING))
 	})
 
 	It("should return error code ERR_VALIDATOR_NOT_EMAIL", func() {
@@ -30,7 +29,7 @@ var _ = Describe("EmailChecker", func() {
 		for _, email := range cases {
 			err := New().Validate(sampleEmailInputTest2{email})
 			Expect(err).NotTo(BeNil())
-			Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_EMAIL))
+			Expect(err.Code()).To(Equal(ERR_VALIDATOR_NOT_EMAIL))
 		}
 	})
 

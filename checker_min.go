@@ -18,7 +18,7 @@ func (c *minChecker) Name() string {
 }
 
 // Check tests input value with expectation
-func (c *minChecker) Check(v interface{}, expects string) error {
+func (c *minChecker) Check(v interface{}, expects string) errors.Error {
 	if err := IsNumber(v); err != nil {
 		return err
 	}
@@ -36,7 +36,7 @@ func (c *minChecker) Check(v interface{}, expects string) error {
 	return errors.New(ERR_VALIDATOR_NOT_NUMBER, fmt.Sprintf("%v is not a number", v))
 }
 
-func (c *minChecker) checkInt(v interface{}, expects int64) error {
+func (c *minChecker) checkInt(v interface{}, expects int64) errors.Error {
 	i, err := IsInt(v)
 	if err != nil {
 		return err
@@ -49,7 +49,7 @@ func (c *minChecker) checkInt(v interface{}, expects int64) error {
 	return nil
 }
 
-func (c *minChecker) checkFloat(v interface{}, expects float64) error {
+func (c *minChecker) checkFloat(v interface{}, expects float64) errors.Error {
 	f, err := IsFloat(v)
 	if err != nil {
 		return err

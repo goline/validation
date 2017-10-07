@@ -1,7 +1,6 @@
 package validation
 
 import (
-	"github.com/goline/errors"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -26,19 +25,19 @@ var _ = Describe("MinLengthChecker", func() {
 	It("should return error code ERR_VALIDATOR_NOT_STRING", func() {
 		err := New().Validate(sampleMinLengthInput1{10})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_STRING))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_NOT_STRING))
 	})
 
 	It("should return error code ERR_VALIDATOR_NOT_INT", func() {
 		err := New().Validate(sampleMinLengthInput2{"aa"})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_INT))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_NOT_INT))
 	})
 
 	It("should return error code ERR_VALIDATOR_NOT_MIN_LENGTH", func() {
 		err := New().Validate(sampleMinLengthInput3{"aa"})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_MIN_LENGTH))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_NOT_MIN_LENGTH))
 	})
 
 	It("should return nil", func() {

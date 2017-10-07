@@ -1,7 +1,6 @@
 package validation
 
 import (
-	"github.com/goline/errors"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -26,19 +25,19 @@ var _ = Describe("RegExpChecker", func() {
 	It("should return error code ERR_VALIDATOR_REGEXP_WRONG_PATTERN", func() {
 		err := New().Validate(sampleRegexpInputTest1{10})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_REGEXP_WRONG_PATTERN))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_REGEXP_WRONG_PATTERN))
 	})
 
 	It("should return error code ERR_VALIDATOR_REGEXP_NOT_MATCH", func() {
 		err := New().Validate(sampleRegexpInputTest2{"j@hn"})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_REGEXP_NOT_MATCH))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_REGEXP_NOT_MATCH))
 	})
 
 	It("should return error code ERR_VALIDATOR_NOT_STRING", func() {
 		err := New().Validate(sampleRegexpInputTest3{10})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_STRING))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_NOT_STRING))
 	})
 
 	It("should return nil", func() {

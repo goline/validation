@@ -1,13 +1,13 @@
 package validation
 
 import (
-	ee "errors"
+	"fmt"
 	"testing"
 
-	"fmt"
-	"github.com/goline/errors"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+
+	"github.com/goline/errors"
 )
 
 func TestValidator(t *testing.T) {
@@ -17,19 +17,19 @@ func TestValidator(t *testing.T) {
 
 type xChecker struct{}
 
-func (c *xChecker) Name() string                              { return "x" }
-func (c *xChecker) Check(v interface{}, expects string) error { return nil }
+func (c *xChecker) Name() string                                     { return "x" }
+func (c *xChecker) Check(v interface{}, expects string) errors.Error { return nil }
 
 type emptyValidatorInput struct{}
 type yChecker struct{}
 
-func (c *yChecker) Name() string                              { return "y" }
-func (c *yChecker) Check(v interface{}, expects string) error { return nil }
+func (c *yChecker) Name() string                                     { return "y" }
+func (c *yChecker) Check(v interface{}, expects string) errors.Error { return nil }
 
 type zChecker struct{}
 
 func (c *zChecker) Name() string { return "z" }
-func (c *zChecker) Check(v interface{}, expects string) error {
+func (c *zChecker) Check(v interface{}, expects string) errors.Error {
 	if vv, ok := v.(string); ok == true && vv != "" {
 		return nil
 	}
@@ -116,7 +116,7 @@ var _ = Describe("FactoryValidator", func() {
 	It("should return error code ERR_VALIDATOR_INVALID_TYPE", func() {
 		err := New().Validate("a string")
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_INVALID_TYPE))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_INVALID_TYPE))
 	})
 
 	It("should ignore when no validation rules found", func() {
@@ -139,7 +139,7 @@ var _ = Describe("FactoryValidator", func() {
 
 		err := v.Validate(sampleValidatorInput6{Z: "a", I: sampleValidatorInput5{1, "b"}})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal("code"))
+		Expect(err.Code()).To(Equal("code"))
 	})
 
 	It("should validate empty tag", func() {
@@ -152,7 +152,7 @@ var _ = Describe("FactoryValidator", func() {
 		v := New().WithChecker(&yChecker{}).WithChecker(&zChecker{})
 		err := v.Validate(sampleValidatorInput3{"hello"})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_INVALID_TAG))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_INVALID_TAG))
 	})
 
 	It("should return continue when checker is not found", func() {
@@ -176,16 +176,6 @@ var _ = Describe("FactoryValidator", func() {
 		Expect(err).NotTo(BeNil())
 	})
 
-	It("should return error code ERR_VALIDATOR_UNKNOWN_ERROR if error is unknown", func() {
-		v := &FactoryValidator{
-			tag:      "validate",
-			checkers: make(map[string]Checker),
-		}
-		err := v.modifyError("name", ee.New("an error"))
-		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_UNKNOWN_ERROR))
-	})
-
 	It("should return error code ERR_VALIDATOR_INVALID_TYPE if value is not supported", func() {
 		v := &FactoryValidator{
 			tag:      "validate",
@@ -193,6 +183,6 @@ var _ = Describe("FactoryValidator", func() {
 		}
 		_, err := v.valueOf("string")
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_INVALID_TYPE))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_INVALID_TYPE))
 	})
 })

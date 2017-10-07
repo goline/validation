@@ -1,7 +1,6 @@
 package validation
 
 import (
-	"github.com/goline/errors"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -10,7 +9,7 @@ var _ = Describe("Is", func() {
 	It("IsNil should return error code ERR_VALIDATOR_NOT_NIL", func() {
 		err := IsNil(5)
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_NIL))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_NOT_NIL))
 	})
 
 	It("IsNil should return nil", func() {

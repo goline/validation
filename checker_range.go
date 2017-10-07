@@ -19,7 +19,7 @@ func (c *rangeChecker) Name() string {
 	return "range"
 }
 
-func (c *rangeChecker) Check(v interface{}, expects string) error {
+func (c *rangeChecker) Check(v interface{}, expects string) errors.Error {
 	t := reflect.TypeOf(v)
 	switch t.Kind() {
 	case reflect.Int64:
@@ -31,7 +31,7 @@ func (c *rangeChecker) Check(v interface{}, expects string) error {
 	}
 }
 
-func (c *rangeChecker) checkInt(i int64, expects string) error {
+func (c *rangeChecker) checkInt(i int64, expects string) errors.Error {
 	p := `^(\d+)-(\d+)$`
 	r, _ := regexp.Compile(p)
 
@@ -49,7 +49,7 @@ func (c *rangeChecker) checkInt(i int64, expects string) error {
 	return nil
 }
 
-func (c *rangeChecker) checkFloat(f float64, expects string) error {
+func (c *rangeChecker) checkFloat(f float64, expects string) errors.Error {
 	p := `^([\d.]+)-([\d.]+)$`
 	r, _ := regexp.Compile(p)
 

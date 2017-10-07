@@ -28,7 +28,7 @@ func (c *emailChecker) Name() string {
 	return "email"
 }
 
-func (c *emailChecker) Check(v interface{}, _ string) error {
+func (c *emailChecker) Check(v interface{}, _ string) errors.Error {
 	s, err := IsString(v)
 	if err != nil {
 		return err

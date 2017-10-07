@@ -1,7 +1,6 @@
 package validation
 
 import (
-	"github.com/goline/errors"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -26,19 +25,19 @@ var _ = Describe("MaxLengthChecker", func() {
 	It("should return error code ERR_VALIDATOR_NOT_STRING", func() {
 		err := New().Validate(sampleMaxLengthInput1{10})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_STRING))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_NOT_STRING))
 	})
 
 	It("should return error code ERR_VALIDATOR_NOT_INT", func() {
 		err := New().Validate(sampleMaxLengthInput2{"aa"})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_INT))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_NOT_INT))
 	})
 
 	It("should return error code ERR_VALIDATOR_NOT_MAX_LENGTH", func() {
 		err := New().Validate(sampleMaxLengthInput3{"aaaa"})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_MAX_LENGTH))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_NOT_MAX_LENGTH))
 	})
 
 	It("should return nil", func() {

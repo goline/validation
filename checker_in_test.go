@@ -1,7 +1,6 @@
 package validation
 
 import (
-	"github.com/goline/errors"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -44,31 +43,31 @@ var _ = Describe("InChecker", func() {
 	It("should return error code ERR_VALIDATOR_IN_EMPTY_LIST", func() {
 		err := New().Validate(sampleInInput1{10})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_IN_EMPTY_LIST))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_IN_EMPTY_LIST))
 	})
 
 	It("should return error code ERR_VALIDATOR_INVALID_ARGUMENT", func() {
 		err := New().Validate(sampleInInput2{false})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_INVALID_ARGUMENT))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_INVALID_ARGUMENT))
 	})
 
 	It("should return error code ERR_VALIDATOR_NOT_IN_LIST (int)", func() {
 		err := New().Validate(sampleInInput3{7})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_IN_LIST))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_NOT_IN_LIST))
 	})
 
 	It("should return error code ERR_VALIDATOR_NOT_IN_LIST (float)", func() {
 		err := New().Validate(sampleInInput4{7.3})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_IN_LIST))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_NOT_IN_LIST))
 	})
 
 	It("should return error code ERR_VALIDATOR_NOT_IN_LIST (string)", func() {
 		err := New().Validate(sampleInInput5{"medium"})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_IN_LIST))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_NOT_IN_LIST))
 	})
 
 	It("should return nil", func() {
@@ -79,12 +78,12 @@ var _ = Describe("InChecker", func() {
 	It("should return error code ERR_VALIDATOR_NOT_INT", func() {
 		err := New().Validate(sampleInInput7{5})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_INT))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_NOT_INT))
 	})
 
 	It("should return error code ERR_VALIDATOR_NOT_FLOAT", func() {
 		err := New().Validate(sampleInInput8{5})
 		Expect(err).NotTo(BeNil())
-		Expect(err.(errors.Error).Code()).To(Equal(ERR_VALIDATOR_NOT_FLOAT))
+		Expect(err.Code()).To(Equal(ERR_VALIDATOR_NOT_FLOAT))
 	})
 })

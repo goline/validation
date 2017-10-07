@@ -17,10 +17,10 @@ func (c *regExpChecker) Name() string {
 	return "regexp"
 }
 
-func (c *regExpChecker) Check(v interface{}, expects string) error {
-	r, err := regexp.Compile(expects)
-	if err != nil {
-		return errors.New(ERR_VALIDATOR_REGEXP_WRONG_PATTERN, fmt.Sprintf("RegExp failed to compile. Got %s", err.Error()))
+func (c *regExpChecker) Check(v interface{}, expects string) errors.Error {
+	r, e := regexp.Compile(expects)
+	if e != nil {
+		return errors.New(ERR_VALIDATOR_REGEXP_WRONG_PATTERN, fmt.Sprintf("RegExp failed to compile. Got %s", e.Error()))
 	}
 
 	s, err := IsString(v)
