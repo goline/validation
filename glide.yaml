@@ -1,3 +1,4 @@
 package: github.com/goline/validation
 import:
 - package: github.com/goline/errors
+  version: ~1.0.1
